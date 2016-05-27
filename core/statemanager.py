@@ -1,22 +1,30 @@
-class State:
+class State(object):
+
+    is_paused = False
+    is_stopped = False
 
     def start(self):
         pass
 
-    def update(self):
-        return True
+    def update(self, **kwargs):
+        return not self.is_stopped
 
     def pause(self):
-        pass
+        self.is_paused = True
+        print 'state %s paused' % self.__class__
 
     def unpause(self):
-        pass
+        self.is_paused = False
+        print 'state %s unpaused' % self.__class__
 
     def stop(self):
-        pass
+        self.is_stopped = True
+
+    def on_stop(self):
+        print 'state %s stopped' % self.__class__
 
 
-class StateManager:
+class StateManager(object):
     def __init__(self):
         self.states = []
 
@@ -24,19 +32,21 @@ class StateManager:
         while self.states != []:
             self.update()
 
-    def update(self):
+    def update(self, **kwargs):
         last_state_quit = False
         for s in self.states:
-            last_state_quit = not s.update()
-        return last_state_quit
+            last_state_quit = not s.update(**kwargs)
+        if last_state_quit:
+            self.pop_state()
+        return len(self.states)
 
     def pop_state(self):
         if self.states:
-            self.states.pop().stop()
+            self.states.pop().on_stop()
         if self.states:
             self.states[-1].unpause()
 
     def push_state(self, s):
         if self.states:
             self.states[-1].pause()
-            self.states.append(s)
+        self.states.append(s)

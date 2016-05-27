@@ -8,18 +8,9 @@ class Window(Widget):
         from kivy.core.window import Window
         Window.size = (w, h)
 
-    # events
-    def on_touch_down(self, touch):
-        self.event_manager.on_touch_down()
-
+    # send events to event manager
     def on_touch_up(self, touch):
-        self.event_manager.on_touch_up()
-
-    def on_touch_left(self, touch):
-        self.event_manager.on_touch_left()
-
-    def on_touch_right(self, touch):
-        self.event_manager.on_touch_right()
+        self.event_manager.on_touch_up(touch)
 
 
 class UnitGfx(Widget):
@@ -28,7 +19,15 @@ class UnitGfx(Widget):
         self.pos = Vector(x, y)
 
     def set_animation(self, anim):
-        self.source = self.animation[anim]
+        # TODO: move this to config file
+        animations = {
+            'up': self.walkup,
+            'down': self.walkdown,
+            'left': self.walkleft,
+            'right': self.walkright
+        }
+
+        self.source = animations[anim]
 
 
 class HeroGfx(UnitGfx):

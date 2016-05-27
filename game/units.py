@@ -2,6 +2,8 @@ from gfx import HeroGfx, EnemiGfx, BrickGfx
 
 
 class Unit(object):
+    v = 40
+    direction = None
 
     def __init__(self):
         raise NotImplementedError("Unit is abstract type")
@@ -10,9 +12,34 @@ class Unit(object):
         self.gfx.set_position(x, y)
 
     def move_up(self, dt):
-        v = 100
-        self.gfx.set_position(self.gfx.pos[0], self.gfx.pos[1]+dt*v)
-        self.gfx.img.source = self.gfx.walk
+        self.move(dt, 'up')
+
+    def move_down(self, dt):
+        self.move(dt, 'down')
+
+    def move_left(self, dt):
+        self.move(dt, 'left')
+
+    def move_right(self, dt):
+        self.move(dt, 'right')
+
+    def move(self, dt, direction):
+        self.direction = direction
+
+    def update(self, dt):
+        if not self.direction:
+            return
+        self.gfx.set_animation(self.direction)
+        direction = {
+            'up': (0, 1),
+            'down': (0, -1),
+            'left': (-1, 0),
+            'right': (1, 0)
+        }[self.direction]
+        x = self.gfx.pos[0] + direction[0]*dt*self.v
+        y = self.gfx.pos[1] + direction[1]*dt*self.v
+        self.gfx.set_position(x, y)
+        self.direction = None
 
 
 class Hero(Unit):

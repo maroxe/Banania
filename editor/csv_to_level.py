@@ -3,9 +3,9 @@ import csv_grid
 input_csv = '../lvl/level1.csv'
 output_lvl = '../lvl/level1.lvl'
 
-HIGHT = WIDTH = 32*8
+SPRITE_SIZE = 64
 N = 8
-SPRITE_SIZE = HIGHT / N
+HIGHT = WIDTH = N * SPRITE_SIZE
 
 # read
 with open(input_csv) as f:

@@ -1,4 +1,5 @@
 from kivy.uix.widget import Widget
+from kivy.vector import Vector
 
 
 class EventManager(Widget):
@@ -10,21 +11,16 @@ class EventManager(Widget):
     def register_action(self, key, action):
         self.actions[key] = action
 
-    def on_touch_down(self):
-        self.events = dict(self.clean_events)
-        self.events['down'] = True
+    def on_touch_up(self, touch):
+        directions = [['left', 'right'], ['down', 'up']]
+        u = Vector(touch.pos) - Vector(touch.opos)
+        d = abs(u[0]) < abs(u[1])
+        s = u[d] > 0
+        self.on_swipe(directions[d][s])
 
-    def on_touch_up(self):
+    def on_swipe(self, direction):
         self.events = dict(self.clean_events)
-        self.events['up'] = True
-
-    def on_touch_left(self):
-        self.events = dict(self.clean_events)
-        self.events['left'] = True
-
-    def on_touch_right(self):
-        self.events = dict(self.clean_events)
-        self.events['right'] = True
+        self.events[direction] = True
 
     def update(self, dt):
         for event, action in self.actions.items():
