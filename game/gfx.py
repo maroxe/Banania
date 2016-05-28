@@ -18,6 +18,9 @@ class UnitGfx(Widget):
     def set_position(self, x, y):
         self.pos = Vector(x, y)
 
+    def set_rotation(self, angle):
+        self.angle = angle
+
     def set_animation(self, anim):
         # TODO: move this to config file
         animations = {

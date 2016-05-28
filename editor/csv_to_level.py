@@ -4,7 +4,7 @@ input_csv = '../lvl/level1.csv'
 output_lvl = '../lvl/level1.lvl'
 
 SPRITE_SIZE = 64
-N = 8
+N = 20
 HIGHT = WIDTH = N * SPRITE_SIZE
 
 # read

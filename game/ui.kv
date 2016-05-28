@@ -1,13 +1,27 @@
 <UnitGfx>:
         source: None
         image: gfximage
+
         animation: {}
-        
+        angle: 0        
         Image:
                 id: gfximage
                 source: root.source
                 pos: root.pos
                 size: (64, 64)
+
+                canvas:
+                        Rotate:
+                                axis: 0,0,1
+                                angle: root.angle
+                                origin: self.center
+                        Color:
+                                rgba: 1,0,0,.2
+                        Line:
+                                rectangle: self.x, self.y, self.width, self.height
+                        Ellipse:
+                                pos: self.x, self.y
+                                size: self.width, self.height
 
 
 <BrickGfx>:

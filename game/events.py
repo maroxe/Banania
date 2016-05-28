@@ -26,3 +26,4 @@ class EventManager(Widget):
         for event, action in self.actions.items():
             if self.events[event]:
                 action(dt)
+        self.events = self.clean_events
