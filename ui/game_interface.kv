@@ -1,0 +1,11 @@
+<GameInterface>
+        score: 0
+        canvas.before:
+                Rectangle:
+                        size: self.size
+                        source: 'img/background/storyboard.png'
+        Label:
+                pos: root.size[0]-100, root.size[1]-80
+                text: '[color=000000]Score %d[/color]' % root.score 
+                markup: True
+                font_size: '10sp'

@@ -1,7 +1,8 @@
 from kivy.uix.widget import Widget
 
+import game_rules
 from core.statemanager import State
-import game_rules 
+from ui.game_interface import GameInterface
 from physics import Physics
 from events import EventManager
 from units import Hero
@@ -14,10 +15,11 @@ class GameLogic(State):
         self.event_manager = EventManager()
 
     def build_widget(self):
-        self.root_widget = Widget()
+        self.root_widget = GameInterface()
         return self.root_widget
 
     def update(self, dt):
+        self.root_widget.score = self.game_state.score
         self.event_manager.update(dt)
         if not self.is_paused:
             self.physics.update(dt)
@@ -30,6 +32,7 @@ class GameLogic(State):
         lvl = Level(level_file)
         w, h = lvl.get_header()
         self.root_widget.parent.resize(w, h)
+        self.root_widget.size = (w, h)
         self.physics = Physics(w, h)
 
         units = [self.add_hero(lvl.units_symbols['h'][0], 100, 100)]
@@ -45,6 +48,31 @@ class GameLogic(State):
             lvl.units_symbols['e'][0],
             post_solve=game_rules.collision_hero_enemy
         )
+
+        # build call backs for collision
+        self.physics.space.add_collision_handler(
+            lvl.units_symbols['h'][0],
+            lvl.units_symbols['b'][0],
+            post_solve=game_rules.collision_hero_border,
+            game_logic=self
+        )
+
+        # build call backs for collision
+        self.physics.space.add_collision_handler(
+            lvl.units_symbols['e'][0],
+            lvl.units_symbols['b'][0],
+            post_solve=game_rules.collision_enemy_border,
+            game_logic=self
+        )
+
+    def game_ended(self, player_won):
+        if player_won:
+            self.game_state.score += 1
+        else:
+            self.game_state.score -= 1
+        self.game_state.player_won = player_won
+        self.stop()
+        self.on_quit()
 
     def add_unit(self, unit_factory, collision_type, x, y):
         u = unit_factory(collision_type)

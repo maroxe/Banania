@@ -5,7 +5,7 @@ class Level:
     units_symbols = {
         'h': (10, Hero),
         'e': (20, Enemy),
-        'b': (30, Brick)
+        'b': (0, Brick)
     }
 
     def __init__(self, level_file):
