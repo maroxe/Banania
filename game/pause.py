@@ -1,3 +1,4 @@
+from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 
 from core.statemanager import State
@@ -6,7 +7,8 @@ from core.statemanager import State
 class Pause(State):
 
     def build_widget(self):
-        b = Button(text='Hello world', font_size=14)
+        w = PauseWidget()
+        b = w.start_button
 
         def on_button_pressed(instance):
             print 'button pressed'
@@ -14,4 +16,7 @@ class Pause(State):
             self.on_quit()
 
         b.bind(on_press=on_button_pressed)
-        return b
+        return w
+
+class PauseWidget(Widget):
+    pass

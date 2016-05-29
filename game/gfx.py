@@ -37,7 +37,7 @@ class HeroGfx(UnitGfx):
     pass
 
 
-class EnemiGfx(UnitGfx):
+class EnemyGfx(UnitGfx):
     pass
 
 

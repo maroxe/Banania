@@ -1,11 +1,11 @@
-from units import Hero, Enemi, Brick
+from units import *
 
 
 class Level:
     units_symbols = {
-        'h': Hero,
-        'e': Enemi,
-        'b': Brick
+        'h': (10, Hero),
+        'e': (20, Enemy),
+        'b': (30, Brick)
     }
 
     def __init__(self, level_file):
@@ -18,7 +18,8 @@ class Level:
 
     def read_line(self, line):
         u, x, y = line.split()
-        return (self.units_symbols[u], int(x), int(y))
+        collision_type, symbol = self.units_symbols[u]
+        return (collision_type, symbol, int(x), int(y))
 
     def iter(self):
         return self.units

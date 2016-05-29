@@ -1,6 +1,6 @@
 import random
 
-from gfx import HeroGfx, EnemiGfx, BrickGfx
+from gfx import HeroGfx, EnemyGfx, BrickGfx
 from physics import UnitPhysics
 
 
@@ -8,12 +8,17 @@ class Unit(object):
     v = 10000
     direction = None
 
-    def __init__(self):
-        raise NotImplementedError("Unit is abstract type")
+    def __init__(self, collision_type):
+        self.gfx = self.gfx_factory()
+        self.physics = self.physics_factory(collision_type)
+        self.physics.body.unit = self
 
     def set_position(self, x, y):
         self.physics.set_position(x, y)
         self.gfx.set_position(x, y)
+
+    def apply_torque(self):
+        self.physics.body.apply_impulse((-2, 0), (0, 32))
 
     def move_up(self, dt):
         self.move(dt, 'up')
@@ -50,16 +55,14 @@ class Unit(object):
 
 class Hero(Unit):
 
-    def __init__(self):
-        self.gfx = HeroGfx()
-        self.physics = UnitPhysics()
+    physics_factory = UnitPhysics
+    gfx_factory = HeroGfx
 
 
-class Enemi(Unit):
+class Enemy(Unit):
 
-    def __init__(self):
-        self.gfx = EnemiGfx()
-        self.physics = UnitPhysics()
+    physics_factory = UnitPhysics
+    gfx_factory = EnemyGfx
 
     def update(self, dt):
         # move randomly
@@ -75,6 +78,5 @@ class Enemi(Unit):
 
 class Brick(Unit):
 
-    def __init__(self):
-        self.gfx = BrickGfx()
-        self.physics = UnitPhysics()
+    physics_factory = UnitPhysics
+    gfx_factory = BrickGfx

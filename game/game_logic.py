@@ -1,6 +1,7 @@
 from kivy.uix.widget import Widget
 
 from core.statemanager import State
+import game_rules 
 from physics import Physics
 from events import EventManager
 from units import Hero
@@ -11,7 +12,6 @@ class GameLogic(State):
 
     def __init__(self):
         self.event_manager = EventManager()
-
 
     def build_widget(self):
         self.root_widget = Widget()
@@ -29,24 +29,32 @@ class GameLogic(State):
         level_file = 'lvl/level1.lvl'
         lvl = Level(level_file)
         w, h = lvl.get_header()
-        self.physics = Physics(w, h)
         self.root_widget.parent.resize(w, h)
+        self.physics = Physics(w, h)
 
-        units = [self.add_hero(100, 100)]
-        for (unit_factory, x, y) in lvl.iter():
-            unit = self.add_unit(unit_factory, x, y)
+        units = [self.add_hero(lvl.units_symbols['h'][0], 100, 100)]
+        for (collision_type, unit_factory, x, y) in lvl.iter():
+            unit = self.add_unit(unit_factory, collision_type, x, y)
             units.append(unit)
+
         self.units = units
 
-    def add_unit(self, unit_factory, x, y):
-        u = unit_factory()
+        # build call backs for collision
+        self.physics.space.add_collision_handler(
+            lvl.units_symbols['h'][0],
+            lvl.units_symbols['e'][0],
+            post_solve=game_rules.collision_hero_enemy
+        )
+
+    def add_unit(self, unit_factory, collision_type, x, y):
+        u = unit_factory(collision_type)
         u.set_position(x, y)
         self.physics.add_body(u)
         self.root_widget.add_widget(u.gfx)
         return u
 
-    def add_hero(self, x, y):
-        hero = self.add_unit(Hero, x, y)
+    def add_hero(self, collision_type, x, y):
+        hero = self.add_unit(Hero, collision_type, x, y)
 
         movements = {
             'up': lambda dt: hero.move_up(dt),

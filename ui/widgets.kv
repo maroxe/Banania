@@ -1,0 +1,21 @@
+<Window>
+        canvas.before:
+                Rectangle:
+                        size: self.size
+                        source: 'img/background/storyboard.png'
+
+<PauseWidget>
+        start_button: start_button
+        size: 200, 200
+        pos: 400, 200
+        BoxLayout:
+                orientation: 'vertical'
+                size: root.size
+                pos: root.pos
+                Button:
+                        id: start_button
+                        text: 'Start'
+                Button:
+                        id: quit_button
+                        text: 'Quit'
+                        on_press: app.stop()
