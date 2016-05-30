@@ -10,6 +10,7 @@ from ui.start_menu import StartMenu
 from ui.begin_level import BeginLevel
 from ui.end_level import EndLevel
 
+
 class GameApp(App):
 
     def build(self):

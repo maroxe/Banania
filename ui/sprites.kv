@@ -2,10 +2,14 @@
         source: None
         animation: {}
         angle: 0      
+        size: 32, 32
+        mass: 1
+        shape: 'circle'
+        collision_type: 0
         Image:
                 source: root.source
                 pos: root.pos
-                size: 64, 64
+                size: root.size
 
                 canvas.before:
                         PushMatrix:
@@ -28,11 +32,9 @@
                 canvas.after:
                         PopMatrix:
 
-<BrickGfx>:
-        source: 'img/sprites/caisse.jpg'
-
-
 <HeroGfx>:
+        collision_type: 1
+        mass: 10
         source: 'img/sprites/p1walkdown.zip'
         walkup: 'img/sprites/p1walkup.zip'
         walkdown: 'img/sprites/p1walkdown.zip'
@@ -40,6 +42,7 @@
         walkright: 'img/sprites/p1walkright.zip'
 
 <EnemyGfx>:
+        collision_type: 2
         source: 'img/sprites/p2walkdown.zip'
         walkup: 'img/sprites/p2walkup.zip'
         walkdown: 'img/sprites/p2walkdown.zip'
@@ -47,4 +50,11 @@
         walkright: 'img/sprites/p2walkright.zip'
      
 
+<GoalGfx>:
+        collision_type: 3
+        mass: 1000
+        source: 'img/sprites/caisse.jpg'
 
+<BrickGfx>:
+        collision_type: 4
+        source: 'img/sprites/ball.png'

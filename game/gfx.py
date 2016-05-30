@@ -43,3 +43,6 @@ class EnemyGfx(UnitGfx):
 
 class BrickGfx(UnitGfx):
     pass
+
+class GoalGfx(UnitGfx):
+    pass

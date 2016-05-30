@@ -1,17 +1,44 @@
 import random
 
-from gfx import HeroGfx, EnemyGfx, BrickGfx
+from core.math import Vector2d
+from gfx import HeroGfx, EnemyGfx, BrickGfx, GoalGfx
 from physics import UnitPhysics
+from ai import UnitAi
 
 
 class Unit(object):
-    v = 10000
+    """
+    Game units are building block of the game: heros, enemies, bricks ...
+    A unit has:
+    - a graphical component for drawing on the screen and animation.
+    - a physical components for physical simulation and handling collision.
+    - a AI component.
+    """
+    physics_factory = None
+    gfx_factory = None
+    ai = None
+
+    v = 500
     direction = None
 
-    def __init__(self, collision_type):
+    def __init__(self):
         self.gfx = self.gfx_factory()
-        self.physics = self.physics_factory(collision_type)
+        radius = self.gfx.size[0]/2
+        mass = self.gfx.mass
+        shape = self.gfx.shape
+        collision_type = self.gfx.collision_type
+        self.physics = self.physics_factory(
+            radius,
+            shape,
+            mass,
+            collision_type)
         self.physics.body.unit = self
+
+    def add_ai(self, ai):
+        self.ai = ai
+
+    def get_position(self):
+        return self.physics.body.position
 
     def set_position(self, x, y):
         self.physics.set_position(x, y)
@@ -20,36 +47,27 @@ class Unit(object):
     def apply_torque(self):
         self.physics.body.apply_impulse((-2, 0), (0, 32))
 
-    def move_up(self, dt):
-        self.move(dt, 'up')
-
-    def move_down(self, dt):
-        self.move(dt, 'down')
-
-    def move_left(self, dt):
-        self.move(dt, 'left')
-
-    def move_right(self, dt):
-        self.move(dt, 'right')
-
     def move(self, dt, direction):
-        self.direction = direction
+        direction = Vector2d(direction)
+        self.direction = direction.normalize()
 
     def update(self, dt):
+        # update ai
+        if self.ai:
+            self.ai.update(dt, self)
+
+        # update gfx
         self.gfx.set_position(*self.physics.get_position())
         self.gfx.set_rotation(self.physics.get_rotation())
+
+        # update mvt
         if not self.direction:
             return
-        self.gfx.set_animation(self.direction)
-        direction = {
-            'up': (0, 1),
-            'down': (0, -1),
-            'left': (-1, 0),
-            'right': (1, 0)
-        }[self.direction]
-        x = direction[0]*dt*self.v
-        y = direction[1]*dt*self.v
+        # self.gfx.set_animation(self.direction)
+        x = self.direction[0]*dt*self.v
+        y = self.direction[1]*dt*self.v
         self.physics.body.apply_impulse((x, y))
+
         self.direction = None
 
 
@@ -58,25 +76,25 @@ class Hero(Unit):
     physics_factory = UnitPhysics
     gfx_factory = HeroGfx
 
+    def move(self, dt, direction):
+        direction = Vector2d(direction)
+        self.direction = direction.normalize()*50
+
 
 class Enemy(Unit):
 
     physics_factory = UnitPhysics
     gfx_factory = EnemyGfx
-
-    def update(self, dt):
-        # move randomly
-        if random.random() > 50*dt:
-            random.choice([
-                self.move_up,
-                self.move_down,
-                self.move_left,
-                self.move_right
-            ])(dt)
-        super(self.__class__, self).update(dt)
+    hero = None
 
 
 class Brick(Unit):
 
     physics_factory = UnitPhysics
     gfx_factory = BrickGfx
+
+
+class Goal(Unit):
+
+    physics_factory = UnitPhysics
+    gfx_factory = GoalGfx
