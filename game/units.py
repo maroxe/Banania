@@ -1,9 +1,6 @@
-import random
-
 from core.math import Vector2d
 from gfx import HeroGfx, EnemyGfx, BrickGfx, GoalGfx
 from physics import UnitPhysics
-from ai import UnitAi
 
 
 class Unit(object):
@@ -18,7 +15,7 @@ class Unit(object):
     gfx_factory = None
     ai = None
 
-    v = 500
+    v = 1000
     direction = None
 
     def __init__(self):
@@ -38,7 +35,7 @@ class Unit(object):
         self.ai = ai
 
     def get_position(self):
-        return self.physics.body.position
+        return Vector2d(self.physics.body.position)
 
     def set_position(self, x, y):
         self.physics.set_position(x, y)
@@ -50,6 +47,9 @@ class Unit(object):
     def move(self, dt, direction):
         direction = Vector2d(direction)
         self.direction = direction.normalize()
+
+    def apply_force(self, f):
+        self.physics.body.apply_impulse(f*500)
 
     def update(self, dt):
         # update ai
@@ -72,7 +72,7 @@ class Unit(object):
 
 
 class Hero(Unit):
-
+    v = 5000
     physics_factory = UnitPhysics
     gfx_factory = HeroGfx
 

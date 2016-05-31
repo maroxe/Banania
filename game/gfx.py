@@ -8,9 +8,14 @@ class Window(Widget):
         from kivy.core.window import Window
         Window.size = (w, h)
 
+    def on_touch_down(self, touch, *args):
+        self.event_manager.on_touch_down(touch, *args)
+        return super(self.__class__, self).on_touch_down(touch, *args)
+
     # send events to event manager
-    def on_touch_up(self, touch):
+    def on_touch_up(self, touch, *args):
         self.event_manager.on_touch_up(touch)
+        return super(self.__class__, self).on_touch_up(touch, *args)
 
 
 class UnitGfx(Widget):
@@ -43,6 +48,7 @@ class EnemyGfx(UnitGfx):
 
 class BrickGfx(UnitGfx):
     pass
+
 
 class GoalGfx(UnitGfx):
     pass

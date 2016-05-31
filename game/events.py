@@ -5,7 +5,8 @@ from kivy.vector import Vector
 class EventManager(Widget):
 
     actions = {}
-    events = {'swipe': None}
+    empty_events = {'swipe': None, 'double tap': None}
+    events = {'swipe': None, 'double tap': None}
 
     def register_action(self, key, action):
         self.actions[key] = action
@@ -14,12 +15,20 @@ class EventManager(Widget):
         u = Vector(touch.pos) - Vector(touch.opos)
         self.on_swipe(u)
 
+    def on_touch_down(self, touch, *args):
+        u = Vector(touch.pos)
+        if touch.is_double_tap:
+            self.on_double_tap(u)
+
     def on_swipe(self, direction):
         self.events['swipe'] = direction
+
+    def on_double_tap(self, pos):
+        self.events['double tap'] = pos
 
     def update(self, dt):
         for key, action in self.actions.items():
             if self.events[key]:
-                print 'self.events[key]', self.events[key]
+                print 'self.events[key]', key
                 action(dt, self.events[key])
-        self.events = {'swipe': None}
+        self.events = dict(self.empty_events)

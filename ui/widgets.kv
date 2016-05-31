@@ -1,3 +1,7 @@
+<Button>
+        background_normal: 'img/sprites/button.png'
+
+
 <Window>
 
 <StartMenuWidget>
@@ -27,12 +31,20 @@
 
 
 <EndLevelWidget>
+        continue_button: continue_button
         count: 0
         player_won: True
-        Label:
-                pos: 300, 400
-                text: '[color=000000]Player %d won![/color]' % ( 1 if root.player_won else 2)
-                markup: True
-                font_size: '100sp'
+        BoxLayout:
+                orientation: 'vertical'
+                size: root.size
+                pos: 400, 400
+
+                Label:
+                        text: '[color=000000]Player %d won![/color]' % ( 1 if root.player_won else 2)
+                        markup: True
+                        font_size: '50sp'
+                Button:
+                        id: continue_button
+                        text: 'Next level!'
 
 

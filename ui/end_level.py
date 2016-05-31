@@ -12,13 +12,19 @@ class EndLevel(State):
     def build_widget(self):
         self.w = EndLevelWidget()
         self.w.player_won = self.player_won
+        b = self.w.continue_button
+        def on_button_pressed(instance):
+            self.stop()
+            self.on_quit()
+
+        b.bind(on_press=on_button_pressed)
         return self.w
 
     def update(self, dt):
         if not self.is_paused:
             self.count -= dt
             self.w.count = self.count
-        if self.count < 0:
+        if False and self.count < 0:
             self.stop()
             self.on_quit()
         return super(self.__class__, self).update(dt=dt)

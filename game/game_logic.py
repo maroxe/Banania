@@ -1,24 +1,29 @@
+
 import game_rules
 from core.statemanager import State
 from ui.game_interface import GameInterface
 from physics import Physics
 from ai import EnemyFollowingTargetAi
 from events import EventManager
-from units import Hero, Enemy, Brick
+from units import Hero, Enemy, Brick, Goal
 from level import Level
 
 
 class GameLogic(State):
 
+    time = 0
+
     def __init__(self):
         self.event_manager = EventManager()
 
     def build_widget(self):
-        self.root_widget = GameInterface()
-        return self.root_widget
+        self.game_interface = GameInterface()
+        return self.game_interface
 
     def update(self, dt):
-        self.root_widget.score = self.game_state.score
+        self.time += dt
+        self.game_interface.score = self.game_state.score
+        self.game_interface.time = self.time
         self.event_manager.update(dt)
         if not self.is_paused:
             self.physics.update(dt)
@@ -30,18 +35,19 @@ class GameLogic(State):
         level_file = 'lvl/level1.lvl'
         lvl = Level(level_file)
         w, h = lvl.get_header()
-        self.root_widget.parent.resize(w, h)
-        self.root_widget.size = (w, h)
+        self.game_interface.parent.resize(w, h)
+        self.game_interface.size = (w, h)
         self.physics = Physics(w, h)
         hero = self.add_hero(100, 500)
         ball = self.add_ball(200, 100)
+        goal = self.add_goal(500, 100)
         old = self.add_enemy_following_target(0, 400, hero)
-        units = [hero, ball, old]
-        for i in range(3):
-            units.append(self.add_enemy_following_target(i*30, 400, ball))
+        units = [hero, ball, old, goal]
+        for i in range(5):
+            units.append(self.add_enemy_following_target(i*30, 400, goal))
 
-        for i in range(5, 7):
-            new = self.add_enemy_following_target(i*30, 400, old)
+        for i in range(5, 10):
+            new = self.add_enemy_following_target(i*30, 400, hero)
             units.append(new)
             old = new
 
@@ -57,6 +63,11 @@ class GameLogic(State):
             game_logic=self
         )
 
+        def on_double_tap(dt, pos):
+            self.add_explosion(hero.get_position())
+
+        self.event_manager.register_action('double tap', on_double_tap)
+
     def game_ended(self, player_won):
         if player_won:
             self.game_state.score += 1
@@ -70,7 +81,7 @@ class GameLogic(State):
         u = unit_factory()
         u.set_position(x, y)
         self.physics.add_body(u)
-        self.root_widget.add_widget(u.gfx)
+        self.game_interface.add_widget(u.gfx)
         return u
 
     def add_hero(self, x, y):
@@ -81,8 +92,16 @@ class GameLogic(State):
     def add_ball(self, x, y):
         return self.add_unit(Brick, x, y)
 
+    def add_goal(self, x, y):
+        return self.add_unit(Goal, x, y)
+
     def add_enemy_following_target(self, x, y, hero):
         enemy = self.add_unit(Enemy,  x, y)
         ai = EnemyFollowingTargetAi(hero)
         enemy.add_ai(ai)
         return enemy
+
+    def add_explosion(self, center):
+        for u in self.units:
+            u.apply_force((u.get_position() - center).normalize())
+        self.game_interface.activate_shader_effect()
