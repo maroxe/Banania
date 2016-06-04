@@ -2,7 +2,6 @@
         score: 0
         time: 0
         GameInterfaceBackground:
-                on_touch_down: print 'size', root.size
                 size: root.size
 
 <GameInterface@GameInterfaceBackground>
@@ -13,7 +12,7 @@
                         size: self.size
                         source: 'img/background/soccer_field.png'
         Label:
-                pos: root.size[0]-150, root.size[1]-80
+                pos: root.size[0]-200, root.size[1]-80
                 text: '[color=000000]Explosions: 10 | Score: %d |  Time: %d [/color]' % (root.score, root.time)
                 markup: True
-                font_size: '10sp'
+                font_size: '20sp'

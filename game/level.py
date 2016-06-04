@@ -10,17 +10,28 @@ class Level:
     }
 
     def __init__(self, level_file):
+        self.units = {
+            'h': [],   # hero
+            'b': [],   # ball
+            'eh': [],  # enemy following hero
+            'eb': [],  # enemy following ball
+            'eg': [],  # enemy following goal
+            'g': []
+        }
+
         with open(level_file) as f:
             self.header = map(int, f.readline().split())
-            self.units = map(self.read_line, f.readlines())
+            self.lines = map(self.read_line, f.readlines())
+
+        for (sym, x, y) in self.lines:
+            self.units[sym].append((x, y))
 
     def get_header(self):
         return self.header
 
     def read_line(self, line):
         u, x, y = line.split()
-        symbol = self.units_symbols[u]
-        return (symbol, int(x), int(y))
+        return (u, int(x), int(y))
 
     def iter(self):
-        return self.units
+        return self.lines

@@ -15,47 +15,56 @@ class GameLogic(State):
 
     def __init__(self):
         self.event_manager = EventManager()
+        self.game_ended = False
+        self.stop_when_unpaused = False
 
     def build_widget(self):
         self.game_interface = GameInterface()
         return self.game_interface
 
     def update(self, dt):
+        # continue animation when the game has ended
+        if self.is_paused and not self.stop_when_unpaused:
+            return True
+
         self.time += dt
         self.game_interface.score = self.game_state.score
         self.game_interface.time = self.time
         self.event_manager.update(dt)
-        if not self.is_paused:
-            self.physics.update(dt)
-            for u in self.units:
-                u.update(dt)
-        return True
 
-    def build_level(self):
-        level_file = 'lvl/level1.lvl'
+        self.physics.update(dt)
+        for u in self.units:
+            u.update(dt)
+
+        if self.is_paused:
+            return True
+
+        if self.stop_when_unpaused:
+            self.stop()
+        return super(GameLogic, self).update(dt=dt)
+
+
+
+    def build_level(self, level_file='lvl/level1.lvl'):
         lvl = Level(level_file)
         w, h = lvl.get_header()
-        self.game_interface.parent.resize(w, h)
-        self.game_interface.size = (w, h)
+
+        self.game_interface.resize_window(w, h)
         self.physics = Physics(w, h)
-        hero = self.add_hero(100, 500)
-        ball = self.add_ball(200, 100)
-        goal = self.add_goal(500, 100)
-        old = self.add_enemy_following_target(0, 400, hero)
-        units = [hero, ball, old, goal]
-        for i in range(5, 5*self.game_state.score):
-            units.append(self.add_enemy_following_target(i*30, 400, goal))
 
-        for i in range(5, 5*self.game_state.score):
-            new = self.add_enemy_following_target(i*30, 500, hero)
-            units.append(new)
-            old = new
+        # build units
+        hero = self.add_hero(*lvl.units['h'][0])
+        ball = self.add_ball(*lvl.units['b'][0])
+        goal = self.add_goal(*lvl.units['g'][0])
+        units = [hero, ball, goal]
 
-        # for (unit_factory, x, y) in lvl.iter():
-        #     unit = self.add_unit(unit_factory, x, y)
-        #     units.append(unit)
+        for sym, target in [('h', hero), ('b', ball), ('g', goal)]:
+            for (x, y) in lvl.units['e%s' % sym]:
+                units.append(self.add_enemy_following_target(x, y, target))
+
         self.units = units
 
+        # build physics space
         self.physics.space.add_collision_handler(
             3,  # goal
             4,  # ball
@@ -64,19 +73,24 @@ class GameLogic(State):
         )
 
         def on_double_tap(dt, pos):
-            self.add_explosion(hero.get_position())
+            if not self.is_paused:
+                self.add_explosion(hero.get_position())
 
         self.event_manager.register_action('double tap', on_double_tap)
 
-    def game_ended(self, player_won):
+    def on_game_end(self, player_won):
+        self.game_ended = True
         if player_won:
             self.game_state.score += 1
         else:
             self.game_state.score -= 1
         self.game_state.player_won = player_won
-        self.stop()
-        self.on_quit()
 
+    def stop(self):
+        self.on_quit()
+        super(GameLogic, self).stop()
+
+    # function for building units
     def add_unit(self, unit_factory, x, y):
         u = unit_factory()
         u.set_position(x, y)

@@ -29,6 +29,5 @@ class EventManager(Widget):
     def update(self, dt):
         for key, action in self.actions.items():
             if self.events[key]:
-                print 'self.events[key]', key
                 action(dt, self.events[key])
         self.events = dict(self.empty_events)

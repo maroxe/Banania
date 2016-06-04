@@ -12,6 +12,6 @@ def collision_hero_border(space, arbiter, game_logic):
 
 
 def collision_ball_border(space, arbiter, game_logic):
-    game_logic.game_ended(player_won=True)
+    game_logic.on_game_end(player_won=True)
     print 'win'
     return True

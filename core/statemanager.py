@@ -4,7 +4,7 @@ class State(object):
     is_stopped = False
 
     def start(self):
-        pass
+        print 'state %s started' % self.__class__
 
     def update(self, **kwargs):
         return not self.is_stopped
@@ -19,24 +19,22 @@ class State(object):
 
     def stop(self):
         self.is_stopped = True
+        print 'state %s stopped' % self.__class__
 
     def on_stop(self):
-        print 'state %s stopped' % self.__class__
+        print 'state %s on stopped' % self.__class__
 
 
 class StateManager(object):
     def __init__(self):
         self.states = []
 
-    def loop(self):
-        while self.states != []:
-            self.update()
-
     def update(self, **kwargs):
         last_state_quit = False
         for s in self.states:
             last_state_quit = not s.update(**kwargs)
         if last_state_quit:
+            print 'popping last state'
             self.pop_state()
         return len(self.states)
 
@@ -50,3 +48,4 @@ class StateManager(object):
         if self.states:
             self.states[-1].pause()
         self.states.append(s)
+        s.start()

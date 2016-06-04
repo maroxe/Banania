@@ -26,6 +26,10 @@ class GameInterface(Widget):
         self.center = (0, 0)
         super(self.__class__, self).__init__(*kwargs)
 
+    def resize_window(self, w, h):
+        self.parent.resize(w, h)
+        self.size = (w, h)
+
     def update_shader(self, dt):
         s = self.canvas
         s['time'] = self.count
