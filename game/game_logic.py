@@ -43,11 +43,11 @@ class GameLogic(State):
         goal = self.add_goal(500, 100)
         old = self.add_enemy_following_target(0, 400, hero)
         units = [hero, ball, old, goal]
-        for i in range(5):
+        for i in range(5, 5*self.game_state.score):
             units.append(self.add_enemy_following_target(i*30, 400, goal))
 
-        for i in range(5, 10):
-            new = self.add_enemy_following_target(i*30, 400, hero)
+        for i in range(5, 5*self.game_state.score):
+            new = self.add_enemy_following_target(i*30, 500, hero)
             units.append(new)
             old = new
 
@@ -104,4 +104,4 @@ class GameLogic(State):
     def add_explosion(self, center):
         for u in self.units:
             u.apply_force((u.get_position() - center).normalize())
-        self.game_interface.activate_shader_effect()
+        self.game_interface.activate_shader_effect(center)

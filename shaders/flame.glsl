@@ -38,27 +38,33 @@ uniform sampler2D texture0;
 
 uniform float u_time;
 uniform float is_active;
+uniform vec2 resolution;
 
+uniform vec2 center; // Mouse position
+uniform float time; // effect elapsed time
+uniform vec3 shockParams; // 10.0, 0.8, 0.1
 
-/*this is the only part of the default shader we need to change 
-  to grayscale our kitten: we need to take the average of the rgb 
-  channels and then assign rgb to be the average */
-void main (void){
-        
+void main() 
+{ 
         if(is_active > 0. ) {
-                vec2 onePixel = vec2(1.0 / 480.0, 1.0 / 320.0);
-                vec2 texCoord = tex_coord0;
-                texCoord.x += sin(u_time) * (onePixel.x * 6.0);
-                texCoord.y += cos(u_time) * (onePixel.y * 6.0);
-                vec4 color;
-                color.rgb = vec3(0.5);
-                color -= texture2D(texture0, texCoord - onePixel) * 5.0;
-                color += texture2D(texture0, texCoord + onePixel) * 5.0;
-                color.rgb = vec3(color.r + color.g + color.b) / 3.0;
-                gl_FragColor = vec4(color.rgb, 1);
+                vec2 uv = tex_coord0.xy;
+                vec2 texCoord = uv;
+                float distance = distance(uv, center);
+                if ( (distance <= (time + shockParams.z)) && 
+                     (distance >= (time - shockParams.z)) ) {
+                        float diff = (distance - time); 
+                        float powDiff = 1.0 - pow(abs(diff*shockParams.x), 
+                                                  shockParams.y); 
+                        float diffTime = diff  * powDiff; 
+                        vec2 diffUV = normalize(uv - center); 
+                        texCoord = uv + (diffUV * diffTime);
+                } 
+                gl_FragColor = frag_color * texture2D(texture0, texCoord);
         } else {
                 vec4 pixel_color = frag_color * texture2D(texture0, tex_coord0);
                 float average = (pixel_color[0] + pixel_color[1] + pixel_color[2])/3.;
                 gl_FragColor = vec4(pixel_color);
+                
         }
 }
+

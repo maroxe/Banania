@@ -1,18 +1,19 @@
 <GameInterface>
-
+        score: 0
+        time: 0
         GameInterfaceBackground:
                 on_touch_down: print 'size', root.size
                 size: root.size
 
-<GameInterfaceBackground>
-        score: 0
-        time: 0
+<GameInterface@GameInterfaceBackground>
+        score: root.score
+        time: root.time
         canvas.before:
                 Rectangle:
                         size: self.size
                         source: 'img/background/soccer_field.png'
         Label:
-                pos: root.size[0]-100, root.size[1]-80
-                text: '[color=000000]Score: %d |  Time: %d [/color]' % (root.score, root.time)
+                pos: root.size[0]-150, root.size[1]-80
+                text: '[color=000000]Explosions: 10 | Score: %d |  Time: %d [/color]' % (root.score, root.time)
                 markup: True
                 font_size: '10sp'
