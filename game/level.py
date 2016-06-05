@@ -18,13 +18,13 @@ class Level:
             'eg': [],  # enemy following goal
             'g': []
         }
-
+        SCALE = 10
         with open(level_file) as f:
             self.header = map(int, f.readline().split())
             self.lines = map(self.read_line, f.readlines())
 
         for (sym, x, y) in self.lines:
-            self.units[sym].append((x, y))
+            self.units[sym].append((x*SCALE, y*SCALE))
 
     def get_header(self):
         return self.header

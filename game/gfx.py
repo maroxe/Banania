@@ -20,26 +20,36 @@ class Window(Widget):
 
 class UnitGfx(Widget):
 
+    def __init__(self, *args, **kargs):
+        super(UnitGfx, self).__init__(*args, **kargs)
+        self.animations = {
+            'default': self.default_animation
+        }
+        self.count = 0
+
     def set_position(self, x, y):
         self.pos = Vector(x, y)
+
+    def update(self, dt):
+        if not self.count:
+            return
+        if self.count < 0:
+            self.set_animation()
+        else:
+            self.count -= dt
 
     def set_rotation(self, angle):
         self.angle = angle
 
-    def set_animation(self, anim):
-        # TODO: move this to config file
-        animations = {
-            'up': self.walkup,
-            'down': self.walkdown,
-            'left': self.walkleft,
-            'right': self.walkright
-        }
-
-        self.source = animations[anim]
+    def set_animation(self, anim='default', duration=None):
+        self.count = duration
+        self.source = self.animations[anim]
 
 
 class HeroGfx(UnitGfx):
-    pass
+    def __init__(self, *args, **kargs):
+        super(HeroGfx, self).__init__(*args, **kargs)
+        self.animations['special'] = self.special
 
 
 class EnemyGfx(UnitGfx):
@@ -51,4 +61,9 @@ class BrickGfx(UnitGfx):
 
 
 class GoalGfx(UnitGfx):
-    pass
+    def __init__(self, *args, **kargs):
+        super(GoalGfx, self).__init__(*args, **kargs)
+        self.animations['happy'] = self.happy
+        self.animations['unhappy'] = self.unhappy
+
+

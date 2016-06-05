@@ -17,6 +17,7 @@ class GameLogic(State):
         self.event_manager = EventManager()
         self.game_ended = False
         self.stop_when_unpaused = False
+        self.i = 0
 
     def build_widget(self):
         self.game_interface = GameInterface()
@@ -30,6 +31,8 @@ class GameLogic(State):
         self.time += dt
         self.game_interface.score = self.game_state.score
         self.game_interface.time = self.time
+        self.game_interface.fps = int((self.i/self.time + 9/dt)/10)
+        self.i += 1
         self.event_manager.update(dt)
 
         self.physics.update(dt)
@@ -43,8 +46,6 @@ class GameLogic(State):
             self.stop()
         return super(GameLogic, self).update(dt=dt)
 
-
-
     def build_level(self, level_file='lvl/level1.lvl'):
         lvl = Level(level_file)
         w, h = lvl.get_header()
@@ -57,7 +58,7 @@ class GameLogic(State):
         ball = self.add_ball(*lvl.units['b'][0])
         goal = self.add_goal(*lvl.units['g'][0])
         units = [hero, ball, goal]
-
+        self.hero, self.ball, self.goal = hero, ball, goal
         for sym, target in [('h', hero), ('b', ball), ('g', goal)]:
             for (x, y) in lvl.units['e%s' % sym]:
                 units.append(self.add_enemy_following_target(x, y, target))
@@ -85,6 +86,7 @@ class GameLogic(State):
         else:
             self.game_state.score -= 1
         self.game_state.player_won = player_won
+        self.goal.set_animation('happy', 2)
 
     def stop(self):
         self.on_quit()
@@ -119,3 +121,5 @@ class GameLogic(State):
         for u in self.units:
             u.apply_force((u.get_position() - center).normalize())
         self.game_interface.activate_shader_effect(center)
+        self.hero.set_animation('special', 0.3)
+        self.goal.set_animation('unhappy', 2)

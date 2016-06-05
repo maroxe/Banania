@@ -8,7 +8,7 @@
 <StartMenuWidget>
         start_button: start_button
         size: 200, 200
-        pos: 250, 200
+        pos: (250, 300) if self.active else self.hide_pos
         BoxLayout:
                 orientation: 'vertical'
                 size: root.size

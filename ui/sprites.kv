@@ -1,6 +1,7 @@
 <UnitGfx>:
-        source: None
-        animation: {}
+        default_animation: None
+        source: self.default_animation
+
         angle: 0      
         size: 32, 32
         mass: 1
@@ -35,7 +36,8 @@
 <HeroGfx>:
         collision_type: 1
         mass: 10
-        source: 'img/sprites/p1walkdown.zip'
+        default_animation: 'img/sprites/p1walkdown.zip'
+        special: 'img/sprites/p1special.zip'
         walkup: 'img/sprites/p1walkup.zip'
         walkdown: 'img/sprites/p1walkdown.zip'
         walkleft: 'img/sprites/p1walkleft.zip'
@@ -43,7 +45,7 @@
 
 <EnemyGfx>:
         collision_type: 2
-        source: 'img/sprites/p2walkdown.zip'
+        default_animation: 'img/sprites/p2walkdown.zip'
         walkup: 'img/sprites/p2walkup.zip'
         walkdown: 'img/sprites/p2walkdown.zip'
         walkleft: 'img/sprites/p2walkleft.zip'
@@ -52,10 +54,12 @@
 
 <GoalGfx>:
         collision_type: 3
-        size: 200, 200
-        mass: 100
-        source: 'img/sprites/goal.png'
+        size: 100, 100
+        mass: 10
+        default_animation: 'img/sprites/goalnormal.zip'
+        happy: 'img/sprites/goalhappy.zip'
+        unhappy: 'img/sprites/goalunhappy.zip'
 
 <BrickGfx>:
         collision_type: 4
-        source: 'img/sprites/ball.png'
+        default_animation: 'img/sprites/ball.png'

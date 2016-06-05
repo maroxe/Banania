@@ -42,7 +42,7 @@ class Unit(object):
         self.gfx.set_position(x, y)
 
     def apply_torque(self):
-        self.physics.body.apply_impulse((-2, 0), (0, 32))
+        self.physics.body.apply_impulse((-20, 0), (0, 32))
 
     def move(self, dt, direction):
         direction = Vector2d(direction)
@@ -57,6 +57,7 @@ class Unit(object):
             self.ai.update(dt, self)
 
         # update gfx
+        self.gfx.update(dt)
         self.gfx.set_position(*self.physics.get_position())
         self.gfx.set_rotation(self.physics.get_rotation())
 
@@ -70,6 +71,8 @@ class Unit(object):
 
         self.direction = None
 
+    def set_animation(self, anim, duration=None):
+        self.gfx.set_animation(anim, duration)
 
 class Hero(Unit):
     v = 5000
@@ -79,6 +82,7 @@ class Hero(Unit):
     def move(self, dt, direction):
         direction = Vector2d(direction)
         self.direction = direction.normalize()*50
+
 
 
 class Enemy(Unit):

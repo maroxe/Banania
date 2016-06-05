@@ -1,18 +1,20 @@
 <GameInterface>
         score: 0
         time: 0
+        fps: 0
         GameInterfaceBackground:
                 size: root.size
 
 <GameInterface@GameInterfaceBackground>
         score: root.score
         time: root.time
+        fps: root.fps
         canvas.before:
                 Rectangle:
                         size: self.size
                         source: 'img/background/soccer_field.png'
         Label:
                 pos: root.size[0]-200, root.size[1]-80
-                text: '[color=000000]Explosions: 10 | Score: %d |  Time: %d [/color]' % (root.score, root.time)
+                text: '[color=000000]fps: %d | Explosions: 10 | Score: %d |  Time: %d [/color]' % (root.fps, root.score, root.time)
                 markup: True
                 font_size: '20sp'

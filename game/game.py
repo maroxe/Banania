@@ -49,6 +49,8 @@ class GameApp(App):
 
         if restart_game:
             self.add_graphic_state(StartMenu())
+            msg = 'Credit goes here'
+            self.add_graphic_state(TemporaryMessage(msg))
         else:
             self.add_graphic_state(EndLevel(True))
 
