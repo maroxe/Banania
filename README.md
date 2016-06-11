@@ -31,6 +31,7 @@ kivy main.py
 
 Screenshots
 ======
-![alt text](img/screenshots/screenshot001.png) "Screenshot of the game 1")
-![alt text](img/screenshots/screenshot002.png) "Screenshot of the game 2")
+![alt text](img/screenshots/screenshot0001.png) "Screenshot of the game 1")
+![alt text](img/screenshots/screenshot0002.png) "Screenshot of the game 2")
+![alt text](img/screenshots/screenshot0003.png) "Screenshot of the game 3")
 
