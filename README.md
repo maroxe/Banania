@@ -17,7 +17,7 @@ Windows
 make
 ```
 
-Linus / Mac OS
+Linux / Mac OS
 ------
 ```sh
 make

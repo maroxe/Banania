@@ -1,5 +1,5 @@
 
-import game_rules
+from game_rules import GameRules
 from core.statemanager import State
 from ui.game_interface import GameInterface
 from physics import Physics
@@ -15,6 +15,7 @@ class GameLogic(State):
     def __init__(self):
         self.game_ended = False
         self.stop_when_unpaused = False
+        self.game_rules = GameRules(self)
         self.i = 0
 
     def build_widget(self):
@@ -68,8 +69,7 @@ class GameLogic(State):
         self.physics.space.add_collision_handler(
             3,  # goal
             4,  # ball
-            post_solve=game_rules.collision_ball_border,
-            game_logic=self
+            post_solve=self.game_rules.collision_ball_border,
         )
 
         def on_double_tap(dt, pos):
