@@ -1,3 +1,4 @@
+from kivy.core.window import Window as KivyWindow
 from kivy.uix.widget import Widget
 from kivy.vector import Vector
 
@@ -16,6 +17,9 @@ class Window(Widget):
     def on_touch_up(self, touch, *args):
         self.event_manager.on_touch_up(touch)
         return super(self.__class__, self).on_touch_up(touch, *args)
+
+    def take_screenshot(self, filename):
+        KivyWindow.screenshot(name=filename)
 
 
 class UnitGfx(Widget):

@@ -4,7 +4,6 @@ from core.statemanager import State
 from ui.game_interface import GameInterface
 from physics import Physics
 from ai import EnemyFollowingTargetAi
-from events import EventManager
 from units import Hero, Enemy, Brick, Goal
 from level import Level
 
@@ -14,7 +13,6 @@ class GameLogic(State):
     time = 0
 
     def __init__(self):
-        self.event_manager = EventManager()
         self.game_ended = False
         self.stop_when_unpaused = False
         self.i = 0
@@ -33,7 +31,6 @@ class GameLogic(State):
         self.game_interface.time = self.time
         self.game_interface.fps = int((self.i/self.time + 9/dt)/10)
         self.i += 1
-        self.event_manager.update(dt)
 
         self.physics.update(dt)
         for u in self.units:

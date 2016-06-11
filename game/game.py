@@ -2,9 +2,11 @@ from kivy.app import App
 from kivy.clock import Clock
 
 from core.statemanager import StateManager, State
+from events import EventManager
 from game_logic import GameLogic
 from game_state import GameState
 from gfx import Window
+
 
 from ui.start_menu import StartMenu
 from ui.end_level import EndLevel
@@ -23,6 +25,9 @@ class GameApp(App):
         self.state_mgr.push_state(self.game_state)
         self.state_mgr.push_state(GameCreatorState(self))
 
+        self.event_manager = EventManager()
+        self.window.event_manager = self.event_manager
+
         return self.window
 
     def start_new_game(self):
@@ -38,7 +43,7 @@ class GameApp(App):
         # create new game
         game_logic = GameLogic()
         game_logic.game_state = self.game_state
-        self.window.event_manager = game_logic.event_manager
+        game_logic.event_manager = self.event_manager
         self.add_graphic_state(game_logic)
         game_logic.build_level(next_lvl)
         self.game_logic = game_logic
@@ -54,8 +59,15 @@ class GameApp(App):
         else:
             self.add_graphic_state(EndLevel(True))
 
+        # take screenshot
+        def take_screenshot(_, key):
+            if key == 's':
+                self.window.take_screenshot('screenshot.png')
+        self.window.event_manager.register_action('key down', take_screenshot)
+
     def update(self, dt):
         self.state_mgr.update(dt=dt)
+        self.event_manager.update(dt)
         if self.game_logic.game_ended:
             # if this is the first time after the game has ended
             if not self.game_logic.stop_when_unpaused:

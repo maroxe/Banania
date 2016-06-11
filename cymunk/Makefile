@@ -1,9 +1,6 @@
-.PHONY: tests build all
+.PHONY: build all
 
-all: build tests
-
-tests:
-	py.test tests
+all: build 
 
 build:
 	python setup.py build_ext --inplace -f
