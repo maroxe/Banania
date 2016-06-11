@@ -1,5 +1,6 @@
 <UnitGfx>:
         default_animation: None
+        animations: {'default': self.default_animation}
         source: self.default_animation
 
         angle: 0      
@@ -24,11 +25,11 @@
 
                         Color:
                                 rgba: 1,0,0,.1
-                        Line:
-                                rectangle: self.x, self.y, self.size[0], self.size[1]
-                        Ellipse:
-                                pos: self.x, self.y
-                                size: self.size
+                        #Line:
+                        #        rectangle: self.x, self.y, self.size[0], self.size[1]
+                        #Ellipse:
+                        #        pos: self.x, self.y
+                        #        size: self.size
 
                 canvas.after:
                         PopMatrix:
@@ -36,30 +37,32 @@
 <HeroGfx>:
         collision_type: 1
         mass: 10
-        default_animation: 'img/sprites/p1walkdown.zip'
-        special: 'img/sprites/p1special.zip'
-        walkup: 'img/sprites/p1walkup.zip'
-        walkdown: 'img/sprites/p1walkdown.zip'
-        walkleft: 'img/sprites/p1walkleft.zip'
-        walkright: 'img/sprites/p1walkright.zip'
+        animations: 
+                {'default': 'img/sprites/p1walkdown.zip',\
+                'special': 'img/sprites/p1special.zip',\
+                'walkup': 'img/sprites/p1walkup.zip',\
+                'walkdown': 'img/sprites/p1walkdown.zip',\
+                'walkleft': 'img/sprites/p1walkleft.zip',\
+                'walkright': 'img/sprites/p1walkright.zip'}
+
 
 <EnemyGfx>:
         collision_type: 2
-        default_animation: 'img/sprites/p2walkdown.zip'
-        walkup: 'img/sprites/p2walkup.zip'
-        walkdown: 'img/sprites/p2walkdown.zip'
-        walkleft: 'img/sprites/p2walkleft.zip'
-        walkright: 'img/sprites/p2walkright.zip'
-     
+        animations: 
+                {'default': 'img/sprites/p2walkdown.zip',\
+                'type1': 'img/sprites/mons/Mons 1.png',\
+                'type2': 'img/sprites/mons/Mons 2.png',\
+                'type3': 'img/sprites/mons/Mons 3.png'}
 
 <GoalGfx>:
         collision_type: 3
         size: 100, 100
         mass: 10
-        default_animation: 'img/sprites/goalnormal.zip'
-        happy: 'img/sprites/goalhappy.zip'
-        unhappy: 'img/sprites/goalunhappy.zip'
+        animations:
+                {'default': 'img/sprites/goalnormal.zip',\
+                'happy': 'img/sprites/goalhappy.zip',\
+                'unhappy': 'img/sprites/goalunhappy.zip'}
 
 <BrickGfx>:
         collision_type: 4
-        default_animation: 'img/sprites/ball.png'
+        animations: {'default': 'img/sprites/ball.png'}

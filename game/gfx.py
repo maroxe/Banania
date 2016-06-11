@@ -22,9 +22,7 @@ class UnitGfx(Widget):
 
     def __init__(self, *args, **kargs):
         super(UnitGfx, self).__init__(*args, **kargs)
-        self.animations = {
-            'default': self.default_animation
-        }
+        self.set_animation()
         self.count = 0
 
     def set_position(self, x, y):
@@ -47,9 +45,7 @@ class UnitGfx(Widget):
 
 
 class HeroGfx(UnitGfx):
-    def __init__(self, *args, **kargs):
-        super(HeroGfx, self).__init__(*args, **kargs)
-        self.animations['special'] = self.special
+    pass
 
 
 class EnemyGfx(UnitGfx):
@@ -63,7 +59,4 @@ class BrickGfx(UnitGfx):
 class GoalGfx(UnitGfx):
     def __init__(self, *args, **kargs):
         super(GoalGfx, self).__init__(*args, **kargs)
-        self.animations['happy'] = self.happy
-        self.animations['unhappy'] = self.unhappy
-
 

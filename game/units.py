@@ -29,7 +29,7 @@ class Unit(object):
             shape,
             mass,
             collision_type)
-        self.physics.body.unit = self
+        #self.physics.body.unit = self
 
     def add_ai(self, ai):
         self.ai = ai

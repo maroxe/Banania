@@ -59,9 +59,11 @@ class GameLogic(State):
         goal = self.add_goal(*lvl.units['g'][0])
         units = [hero, ball, goal]
         self.hero, self.ball, self.goal = hero, ball, goal
-        for sym, target in [('h', hero), ('b', ball), ('g', goal)]:
+        for sym, target, anim in [('h', hero, 'type1'), ('b', ball, 'type2'), ('g', goal, 'type3')]:
             for (x, y) in lvl.units['e%s' % sym]:
-                units.append(self.add_enemy_following_target(x, y, target))
+                u = self.add_enemy_following_target(x, y, target)
+                u.set_animation(anim)
+                units.append(u)
 
         self.units = units
 
@@ -119,7 +121,8 @@ class GameLogic(State):
 
     def add_explosion(self, center):
         for u in self.units:
-            u.apply_force((u.get_position() - center).normalize())
+            r = 2e-2 * max(1, (u.get_position() - center).length())
+            u.apply_force((u.get_position() - center).normalize() / r)
         self.game_interface.activate_shader_effect(center)
-        self.hero.set_animation('special', 0.3)
+        self.hero.set_animation('special', 3)
         self.goal.set_animation('unhappy', 2)
