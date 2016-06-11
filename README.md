@@ -14,17 +14,13 @@ Requirements
 Windows
 ------
 ```sh
-cd cymunk/
-python setup.py build_ext --inplace
-cd ..
+make
 ```
 
 Linus / Mac OS
 ------
 ```sh
-cd cymunk/
 make
-cd ..
 ```
 
 Run 
