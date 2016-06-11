@@ -1,4 +1,4 @@
-import cymunk as pm
+import cymunk.cymunk as pm
 
 
 class Physics:
