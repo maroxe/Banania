@@ -1,23 +1,27 @@
 # Banania
 
+2D game.
+
 Requirements
 ======
 
-Cython>=0.15
-Kivy
+- Cython>=0.15
+- Kivy
 
 
 ## Install
 
 Windows
 ------
-```python
-python cymunk/setup.py build_ext --inplace
+```sh
+cd cymunk/
+python setup.py build_ext --inplace
+cd ..
 ```
 
 Linus / Mac OS
 ------
-```python
+```sh
 cd cymunk/
 make
 cd ..
@@ -25,7 +29,7 @@ cd ..
 
 Run 
 ======
-```python
+```sh
 kivy main.py
 ```
 
