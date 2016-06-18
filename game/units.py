@@ -29,6 +29,7 @@ class Unit(object):
             shape,
             mass,
             collision_type)
+        self.physics.body.data = self
         #self.physics.body.unit = self
 
     def add_ai(self, ai):
@@ -79,10 +80,21 @@ class Hero(Unit):
     physics_factory = UnitPhysics
     gfx_factory = HeroGfx
 
+    def move_up(self, dt):
+        self.move(dt, (0, 1))
+
+    def move_down(self, dt):
+        self.move(dt, (0, -1))
+
+    def move_left(self, dt):
+        self.move(dt, (-1, 0))
+
+    def move_right(self, dt):
+        self.move(dt, (1, 0))
+
     def move(self, dt, direction):
         direction = Vector2d(direction)
         self.direction = direction.normalize()*50
-
 
 
 class Enemy(Unit):

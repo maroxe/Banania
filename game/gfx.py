@@ -5,8 +5,12 @@ from kivy.vector import Vector
 
 class Window(Widget):
 
+    def __init__(self, *args, **kargs):
+        self.resolution = KivyWindow.size
+        super(Window, self).__init__(*args, **kargs)
+
     def resize(self, w, h):
-        from kivy.core.window import Window
+        return
         Window.size = (w, h)
 
     def on_touch_down(self, touch, *args):

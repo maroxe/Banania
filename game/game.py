@@ -59,11 +59,11 @@ class GameApp(App):
         else:
             self.add_graphic_state(EndLevel(True))
 
-        # take screenshot
-        def take_screenshot(_, key):
-            if key == 's':
-                self.window.take_screenshot('screenshot.png')
-        self.window.event_manager.register_action('key down', take_screenshot)
+        # # take screenshot
+        # def take_screenshot(_, key):
+        #     if key == 's':
+        #         self.window.take_screenshot('screenshot.png')
+        # self.window.event_manager.register_action('key down', take_screenshot)
 
     def update(self, dt):
         self.state_mgr.update(dt=dt)

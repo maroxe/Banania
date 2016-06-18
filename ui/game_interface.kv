@@ -2,6 +2,8 @@
         score: 0
         time: 0
         fps: 0
+        explosions_left: 0
+        size: root.size
         GameInterfaceBackground:
                 size: root.size
 
@@ -9,12 +11,13 @@
         score: root.score
         time: root.time
         fps: root.fps
+        explosions_left: root.explosions_left
         canvas.before:
                 Rectangle:
                         size: self.size
                         source: 'img/background/soccer_field.png'
         Label:
                 pos: root.size[0]-200, root.size[1]-80
-                text: '[color=000000]fps: %d | Explosions: 10 | Score: %d |  Time: %d [/color]' % (root.fps, root.score, root.time)
+                text: '[color=000000]fps: %d | Explosions: %d | Score: %d |  Time: %d [/color]' % (root.fps, root.explosions_left, root.score, root.time)
                 markup: True
                 font_size: '20sp'

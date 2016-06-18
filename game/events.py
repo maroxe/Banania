@@ -2,6 +2,8 @@ from kivy.core.window import Window as KivyWindow
 from kivy.uix.widget import Widget
 from kivy.vector import Vector
 
+USE_KEYBOARD = False
+
 
 class EventManager(Widget):
 
@@ -11,8 +13,10 @@ class EventManager(Widget):
 
     def __init__(self, **kwargs):
         super(Widget, self).__init__(**kwargs)
-        self._keyboard = KivyWindow.request_keyboard(self.on_keyboard_closed, self)
-        self._keyboard.bind(on_key_down=self.on_keyboard_down)
+        if USE_KEYBOARD:
+            self._keyboard = KivyWindow.request_keyboard(self.on_keyboard_closed, self)
+            self._keyboard.bind(on_key_down=self.on_keyboard_down)
+            self._keyboard.bind(on_key_up=self.on_keyboard_up)
 
     def on_keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
@@ -37,6 +41,10 @@ class EventManager(Widget):
         self.events['double tap'] = pos
 
     def on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        self.events['key down'] = keycode[1]
+        return True
+
+    def on_keyboard_up(self, keyboard, keycode):
         self.events['key down'] = keycode[1]
         return True
 

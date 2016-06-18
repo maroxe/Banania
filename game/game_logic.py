@@ -1,4 +1,3 @@
-
 from game_rules import GameRules
 from core.statemanager import State
 from ui.game_interface import GameInterface
@@ -15,6 +14,7 @@ class GameLogic(State):
     def __init__(self):
         self.game_ended = False
         self.stop_when_unpaused = False
+        self.explosions_left = 3
         self.game_rules = GameRules(self)
         self.i = 0
 
@@ -30,7 +30,9 @@ class GameLogic(State):
         self.time += dt
         self.game_interface.score = self.game_state.score
         self.game_interface.time = self.time
-        self.game_interface.fps = int((self.i/self.time + 9/dt)/10)
+        self.game_interface.explosions_left = self.explosions_left
+        if self.i % 100 == 0:
+            self.game_interface.fps = int((self.i/self.time + 9/dt)/10)
         self.i += 1
 
         self.physics.update(dt)
@@ -72,11 +74,26 @@ class GameLogic(State):
             post_solve=self.game_rules.collision_ball_border,
         )
 
+        # Bind events to actions
         def on_double_tap(dt, pos):
             if not self.is_paused:
                 self.add_explosion(hero.get_position())
 
+        def on_key_down(dt, key):
+            actions = {
+                'w': self.hero.move_up,
+                's': self.hero.move_down,
+                'a': self.hero.move_left,
+                'd': self.hero.move_right,
+                'o': lambda _: self.add_explosion(hero.get_position()),
+            }
+            if key in actions:
+                actions[key](dt)
+
         self.event_manager.register_action('double tap', on_double_tap)
+        self.event_manager.register_action('swipe', self.hero.move)
+        self.event_manager.register_action('key down', on_key_down)
+
 
     def on_game_end(self, player_won):
         self.game_ended = True
@@ -100,9 +117,7 @@ class GameLogic(State):
         return u
 
     def add_hero(self, x, y):
-        hero = self.add_unit(Hero, x, y)
-        self.event_manager.register_action('swipe', hero.move)
-        return hero
+        return self.add_unit(Hero, x, y)
 
     def add_ball(self, x, y):
         return self.add_unit(Brick, x, y)
@@ -116,10 +131,19 @@ class GameLogic(State):
         enemy.add_ai(ai)
         return enemy
 
+    # Actions
+
     def add_explosion(self, center):
+        if self.explosions_left <= 0:
+            return
+
+        self.explosions_left -= 1
         for u in self.units:
             r = 2e-2 * max(1, (u.get_position() - center).length())
             u.apply_force((u.get_position() - center).normalize() / r)
         self.game_interface.activate_shader_effect(center)
         self.hero.set_animation('special', 3)
         self.goal.set_animation('unhappy', 2)
+
+    def move_hero(self, dt, direction):
+        self.hero.move(dt, directly)
