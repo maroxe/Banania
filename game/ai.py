@@ -17,6 +17,4 @@ class EnemyFollowingTargetAi(object):
     def update(self, dt, unit):
         u = (self.target.get_position() - unit.get_position())
         u *= dt * self.power_follow
-
-        if random.random() > 50*dt:
-            unit.move(dt, u)
+        unit.move(dt, u)
