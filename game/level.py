@@ -1,5 +1,7 @@
-from units import *
+from kivy.metrics import dp
+from kivy.core.window import Window
 
+from units import *
 
 class Level:
     units_symbols = {
@@ -27,7 +29,8 @@ class Level:
             self.units[sym].append((x*SCALE, y*SCALE))
 
     def get_header(self):
-        return self.header
+        return Window.size
+        return map(dp, self.header)
 
     def read_line(self, line):
         u, x, y = line.split()
