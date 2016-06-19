@@ -88,9 +88,10 @@ class GameApp(App):
 
 class GameCreatorState(State):
     """
-    A state whose sole responsability is to create 
+    A state whose sole responsability is to create
     a game when unpaused.
     """
+
     def __init__(self, game_app):
         self.game_app = game_app
 

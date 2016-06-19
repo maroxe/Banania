@@ -4,6 +4,9 @@ from kivy.vector import Vector
 
 
 class Window(Widget):
+    """ 
+    Root widget for GameApp
+    """
 
     def __init__(self, *args, **kargs):
         self.resolution = KivyWindow.size
@@ -12,6 +15,9 @@ class Window(Widget):
     def resize(self, w, h):
         return
         Window.size = (w, h)
+
+    def get_window_size(self):
+        return KivyWindow.size
 
     def on_touch_down(self, touch, *args):
         self.event_manager.on_touch_down(touch, *args)
@@ -28,7 +34,8 @@ class Window(Widget):
 
 class UnitGfx(Widget):
 
-    def __init__(self, *args, **kargs):
+    def __init__(self, size, *args, **kargs):
+        self.size = size
         super(UnitGfx, self).__init__(*args, **kargs)
         self.set_animation()
         self.count = 0

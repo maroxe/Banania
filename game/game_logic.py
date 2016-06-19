@@ -1,4 +1,6 @@
 from game_rules import GameRules
+from core.math import Vector2d, ScaledField
+from core import config
 from core.statemanager import State
 from ui.game_interface import GameInterface
 from physics import Physics
@@ -17,6 +19,7 @@ class GameLogic(State):
         self.explosions_left = 3
         self.game_rules = GameRules(self)
         self.i = 0
+        self.scale = ScaledField(config.get_dp(), *config.get_window_size())
 
     def build_widget(self):
         self.game_interface = GameInterface()
@@ -48,8 +51,7 @@ class GameLogic(State):
 
     def build_level(self, level_file='lvl/level1.lvl'):
         lvl = Level(level_file)
-        w, h = lvl.get_header()
-
+        w, h = self.scale.get(100, 100)
         self.game_interface.resize_window(w, h)
         self.physics = Physics(w, h)
 
@@ -94,7 +96,6 @@ class GameLogic(State):
         self.event_manager.register_action('swipe', self.hero.move)
         self.event_manager.register_action('key down', on_key_down)
 
-
     def on_game_end(self, player_won):
         self.game_ended = True
         if player_won:
@@ -110,8 +111,9 @@ class GameLogic(State):
 
     # function for building units
     def add_unit(self, unit_factory, x, y):
-        u = unit_factory()
-        u.set_position(x, y)
+        size = self.scale.get(*config.get_sprite_size())
+        u = unit_factory(size)
+        u.set_position(*self.scale.get_dp(x, y))
         self.physics.add_body(u)
         self.game_interface.add_widget(u.gfx)
         return u

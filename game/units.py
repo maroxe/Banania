@@ -18,8 +18,8 @@ class Unit(object):
     v = 1000
     direction = None
 
-    def __init__(self):
-        self.gfx = self.gfx_factory()
+    def __init__(self, size):
+        self.gfx = self.gfx_factory(size)
         radius = self.gfx.size[0]/2
         mass = self.gfx.mass
         shape = self.gfx.shape

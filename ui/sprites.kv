@@ -1,10 +1,10 @@
-<UnitGfx>:
+<UnitGfx>
         default_animation: None
         animations: {'default': self.default_animation}
         source: self.default_animation
 
         angle: 0      
-        size: dp(32), dp(32)
+        #size: 32./root.size[0], 32./root.size[1]
         mass: 1
         shape: 'circle'
         collision_type: 0
@@ -56,7 +56,6 @@
 
 <GoalGfx>:
         collision_type: 3
-        size: dp(30), dp(30)
         mass: 10
         animations:
                 {'default': 'img/sprites/goalnormal.zip',\
