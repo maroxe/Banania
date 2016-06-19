@@ -1,5 +1,4 @@
 from game_rules import GameRules
-from core.math import Vector2d, ScaledField
 from core import config
 from core.statemanager import State
 from ui.game_interface import GameInterface
@@ -19,7 +18,7 @@ class GameLogic(State):
         self.explosions_left = 3
         self.game_rules = GameRules(self)
         self.i = 0
-        self.scale = ScaledField(config.get_dp(), *config.get_window_size())
+        self.scale = config.get_scale_object()
 
     def build_widget(self):
         self.game_interface = GameInterface()

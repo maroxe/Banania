@@ -2,13 +2,13 @@
 
 <MenuWidget>
         active: False
-        hide_pos: (400, 800)
+        hide_pos: self.scale(400, 800)
 
 
 <StartMenuWidget>
         start_button: start_button
-        size: 200, 200
-        pos: (250, 300) if self.active else self.hide_pos
+        size: self.scale(20, 40)
+        pos: (self.scale(50-20/2, 50-40/2) if self.active else self.hide_pos)
         BoxLayout:
                 orientation: 'vertical'
                 size: root.size
@@ -16,11 +16,11 @@
                 Button:
                         id: start_button
                         text: 'Start'
-                        font_size: '50sp'
+                        font_size: '20dp'
                 Button:
                         id: quit_button
                         text: 'Quit'
-                        font_size: '50sp'
+                        font_size: '20dp'
                         on_press: app.stop()
 
 
@@ -28,24 +28,24 @@
         count: 0
         msg: ''
         Label:
-                pos: (250, 300) if root.active else root.hide_pos
+                pos: root.scale(40, 50) if root.active else root.hide_pos
                 text: '[color=000000]%s\n Start in %d ![/color]' % (root.msg, root.count+1)
                 markup: True
-                font_size: '50sp'
+                font_size: '20dp'
 
 
 <EndLevelWidget>
         continue_button: continue_button
         count: 0
-        size: 200, 100
+        size: self.scale(40, 50)
         player_won: True
         BoxLayout:
                 orientation: 'vertical'
                 size: root.size
-                pos: (250, 300) if root.active else (400, 800)
+                pos: root.scale(25, 30) if root.active else (400, 800)
                 Button:
                         id: continue_button
                         text: 'Next level!'
-                        font_size: '50sp'
+                        font_size: '20dp'
 
 

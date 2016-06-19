@@ -3,6 +3,8 @@ from kivy.base import EventLoop
 from kivy.clock import Clock
 from kivy.graphics import RenderContext
 
+from core import config
+
 
 class GameInterfaceBackground(Widget):
     pass
@@ -24,6 +26,7 @@ class GameInterface(Widget):
 
         self.count = 0.
         self.center = (0, 0)
+        self.scale = config.get_scale_object().get
         super(self.__class__, self).__init__(*kwargs)
 
     def resize_window(self, w, h):

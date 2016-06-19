@@ -17,7 +17,7 @@
                         size: self.size
                         source: 'img/background/soccer_field.png'
         Label:
-                pos: root.size[0]-200, root.size[1]-80
+                pos: root.scale(80, 90)
                 text: '[color=000000]fps: %d | Explosions: %d | Score: %d |  Time: %d [/color]' % (root.fps, root.explosions_left, root.score, root.time)
                 markup: True
-                font_size: '20sp'
+                font_size: '10dp'

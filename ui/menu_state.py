@@ -1,9 +1,13 @@
 from kivy.uix.widget import Widget
 
 from core.statemanager import State
+from core import config
 
 
 class MenuState(State):
+
+    def __init__(self, *args, **kwargs):
+        super(MenuState, self).__init__(*args, **kwargs)
 
     def update(self, dt, **kwargs):
         self.widget.active = not self.is_paused
@@ -15,4 +19,4 @@ class MenuState(State):
 
 
 class MenuWidget(Widget):
-    pass
+    scale = config.get_scale_object().get
