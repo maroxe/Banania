@@ -20,7 +20,7 @@ class Unit(object):
 
     def __init__(self, size):
         self.gfx = self.gfx_factory(size)
-        radius = self.gfx.size[0]/2
+        radius = size[0]/2
         mass = self.gfx.mass
         shape = self.gfx.shape
         collision_type = self.gfx.collision_type
@@ -94,7 +94,7 @@ class Hero(Unit):
 
     def move(self, dt, direction):
         direction = Vector2d(direction)
-        self.direction = direction.normalize()*50
+        self.direction = direction.normalize()*10
 
 
 class Enemy(Unit):

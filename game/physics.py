@@ -13,10 +13,10 @@ class Physics:
         body = pm.Body()
         body.position = (0, 0)
         # limits of the arena
-        l1 = pm.Segment(body, (0, 0), (0, h), 10)
-        l2 = pm.Segment(body, (w+0, 0), (w+0, h), 10)
-        l3 = pm.Segment(body, (0, -0), (w, -0), 10)
-        l4 = pm.Segment(body, (0, h-0), (w, h-0), 10)
+        l1 = pm.Segment(body, (-10, 0), (-10, h), 10)
+        l2 = pm.Segment(body, (w+10, 0), (w+10, h), 10)
+        l3 = pm.Segment(body, (0, -10), (w, -10), 10)
+        l4 = pm.Segment(body, (0, h+10), (w, h+10), 10)
         l1.elasticity = 1
         l2.elasticity = 1
         l3.elasticity = 1
@@ -38,7 +38,7 @@ class UnitPhysics:
     def __init__(self, radius, shape, mass, collision_type=0):
         self.body = pm.Body(mass, 1)
         self.radius = radius
-
+        print 'radius:', radius
         if shape == 'circle':
             self.poly = pm.Circle(self.body, self.radius)
         elif shape == 'box':

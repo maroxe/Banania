@@ -9,12 +9,12 @@ class UnitAi(object):
 
 class EnemyFollowingTargetAi(object):
 
-    power_follow = 60.
+    power_follow = 60/50.
 
     def __init__(self, target):
         self.target = target
 
     def update(self, dt, unit):
-        u = (self.target.get_position() - unit.get_position())
-        u *= dt * self.power_follow
-        unit.move(dt, u)
+        if random.random() < dt*self.power_follow:
+            u = (self.target.get_position() - unit.get_position())
+            unit.move(dt, u)

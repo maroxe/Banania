@@ -1,6 +1,7 @@
 from kivy.core.window import Window as KivyWindow
 from kivy.uix.widget import Widget
-from kivy.vector import Vector
+
+from core import config
 
 
 class Window(Widget):
@@ -35,13 +36,14 @@ class Window(Widget):
 class UnitGfx(Widget):
 
     def __init__(self, size, *args, **kargs):
-        self.size = size
+        self.scale = config.get_scale_object()
+        self.size = self.scale.get(*size)
         super(UnitGfx, self).__init__(*args, **kargs)
         self.set_animation()
         self.count = 0
 
     def set_position(self, x, y):
-        self.pos = Vector(x, y)
+        self.pos = self.scale.get(x, y)
 
     def update(self, dt):
         if not self.count:
@@ -74,4 +76,3 @@ class BrickGfx(UnitGfx):
 class GoalGfx(UnitGfx):
     def __init__(self, *args, **kargs):
         super(GoalGfx, self).__init__(*args, **kargs)
-

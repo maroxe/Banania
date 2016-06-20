@@ -1,5 +1,5 @@
 from kivy.lang import Builder
-# Config.set('graphics', 'maxfps', '30')
+
 from game.game import GameApp
 
 Builder.load_file('ui/general.kv')

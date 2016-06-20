@@ -29,7 +29,7 @@ class Level:
 
     def read_line(self, line):
         u, x, y = line.split()
-        return (u, int(dp(x)), int(dp(y)))
+        return (u, int(x), int(y))
 
     def iter(self):
         return self.lines

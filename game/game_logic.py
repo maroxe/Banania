@@ -18,7 +18,6 @@ class GameLogic(State):
         self.explosions_left = 3
         self.game_rules = GameRules(self)
         self.i = 0
-        self.scale = config.get_scale_object()
 
     def build_widget(self):
         self.game_interface = GameInterface()
@@ -50,7 +49,7 @@ class GameLogic(State):
 
     def build_level(self, level_file='lvl/level1.lvl'):
         lvl = Level(level_file)
-        w, h = self.scale.get(100, 100)
+        w, h = 100., 100.
         self.game_interface.resize_window(w, h)
         self.physics = Physics(w, h)
 
@@ -110,9 +109,9 @@ class GameLogic(State):
 
     # function for building units
     def add_unit(self, unit_factory, x, y):
-        size = self.scale.get(*config.get_sprite_size())
+        size = config.get_sprite_size()
         u = unit_factory(size)
-        u.set_position(*self.scale.get_dp(x, y))
+        u.set_position(x, y)
         self.physics.add_body(u)
         self.game_interface.add_widget(u.gfx)
         return u
