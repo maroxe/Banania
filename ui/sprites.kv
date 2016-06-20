@@ -16,20 +16,17 @@
                 canvas.before:
                         PushMatrix:
                         Color:
-                                rgba: 1,1,1,1
+                                rgba: 1,0,0,.5
+                        Ellipse:
+                                pos: self.x, self.y
+                                size: root.size
+
                         Rotate:
                                 axis: 0,0,1
                                 angle: root.angle
                                 origin: self.center
-
-                        Color:
-                                rgba: 1,0,0,.5
                         #Line:
                         #        rectangle: self.x, self.y, self.size[0], self.size[1]
-                        Ellipse:
-                                pos: self.x, self.y
-                                size: self.size
-
                 canvas.after:
                         PopMatrix:
 
