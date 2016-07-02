@@ -17,7 +17,6 @@ class Window(Scatter):
         kwargs.setdefault('do_translation', False)
         kwargs.setdefault('do_rotation', False)
 
-        self.resolution = KivyWindow.size
         super(Window, self).__init__(*args, **kwargs)
         Clock.schedule_once(self.fit_to_window, -1)
         KivyWindow.bind(system_size=self.on_window_resize)
@@ -26,10 +25,12 @@ class Window(Scatter):
         self.fit_to_window()
 
     def fit_to_window(self, *args):
-        self.scale = KivyWindow.height/float(self.height)
+        self.scale = min(KivyWindow.height/float(self.height),
+                         KivyWindow.width/float(self.width))
         self.center = KivyWindow.center
         for c in self.children:
-            c.size = self.size
+            pass
+            #c.size = self.size
 
     def on_touch_down(self, touch, *args):
         self.event_manager.on_touch_down(touch, *args)
