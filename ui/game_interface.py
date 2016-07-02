@@ -7,11 +7,11 @@ from core import config
 
 
 class GameInterfaceBackground(Widget):
-    pass
+    scale_obj = config.get_scale_object()
 
 
 class GameInterface(Widget):
-    def __init__(self, *kwargs):
+    def __init__(self, *args, **kwargs):
         # We must do this, if no other widget has been loaded the
         # GL context may not be fully prepared
         EventLoop.ensure_window()
@@ -27,7 +27,7 @@ class GameInterface(Widget):
         self.count = 0.
         self.center = (0, 0)
         self.scale_obj = config.get_scale_object()
-        super(self.__class__, self).__init__(*kwargs)
+        super(self.__class__, self).__init__(*args, **kwargs)
 
     def update_shader(self, dt):
         s = self.canvas

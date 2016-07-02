@@ -14,7 +14,7 @@ class ScaledField:
         self.size = Vector2d(w, h)
 
     def get(self, x, y):
-        return (x, y)
+        return (x*6, y*6)
         #return Vector2d(x, y) / (100., 100.) #* self.size
 
     def get_dp(self, x, y):

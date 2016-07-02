@@ -16,6 +16,7 @@ class Window(Scatter):
         kwargs.setdefault('do_scale', False)
         kwargs.setdefault('do_translation', False)
         kwargs.setdefault('do_rotation', False)
+        kwargs.setdefault('size', (600, 600))
 
         super(Window, self).__init__(*args, **kwargs)
         Clock.schedule_once(self.fit_to_window, -1)
@@ -28,9 +29,9 @@ class Window(Scatter):
         self.scale = min(KivyWindow.height/float(self.height),
                          KivyWindow.width/float(self.width))
         self.center = KivyWindow.center
-        for c in self.children:
-            pass
-            #c.size = self.size
+
+        #for c in self.children:
+        #    c.size = self.size
 
     def on_touch_down(self, touch, *args):
         self.event_manager.on_touch_down(touch, *args)

@@ -1,3 +1,5 @@
+from kivy.uix.anchorlayout import AnchorLayout
+
 from menu_state import MenuState, MenuWidget
 
 
@@ -11,6 +13,7 @@ class TemporaryMessage(MenuState):
         self.widget = TemporaryMessageWidget()
         self.widget.msg = self.msg
         self.widget.count = self.duration
+
         return self.widget
 
     def update(self, dt):
