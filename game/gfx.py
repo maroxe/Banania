@@ -1,24 +1,35 @@
 from kivy.core.window import Window as KivyWindow
 from kivy.uix.widget import Widget
+from kivy.uix.scatter import Scatter
+from kivy.clock import Clock
 
 from core import config
 
 
-class Window(Widget):
-    """ 
+class Window(Scatter):
+    """
     Root widget for GameApp
     """
 
-    def __init__(self, *args, **kargs):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('size_hint', (None, None))
+        kwargs.setdefault('do_scale', False)
+        kwargs.setdefault('do_translation', False)
+        kwargs.setdefault('do_rotation', False)
+
         self.resolution = KivyWindow.size
-        super(Window, self).__init__(*args, **kargs)
+        super(Window, self).__init__(*args, **kwargs)
+        Clock.schedule_once(self.fit_to_window, -1)
+        KivyWindow.bind(system_size=self.on_window_resize)
 
-    def resize(self, w, h):
-        return
-        Window.size = (w, h)
+    def on_window_resize(self, window, size):
+        self.fit_to_window()
 
-    def get_window_size(self):
-        return KivyWindow.size
+    def fit_to_window(self, *args):
+        self.scale = KivyWindow.height/float(self.height)
+        self.center = KivyWindow.center
+        for c in self.children:
+            c.size = self.size
 
     def on_touch_down(self, touch, *args):
         self.event_manager.on_touch_down(touch, *args)

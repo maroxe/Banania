@@ -50,7 +50,6 @@ class GameLogic(State):
     def build_level(self, level_file='lvl/level1.lvl'):
         lvl = Level(level_file)
         w, h = 100., 100.
-        self.game_interface.resize_window(w, h)
         self.physics = Physics(w, h)
 
         # build units

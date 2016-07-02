@@ -26,13 +26,8 @@ class GameInterface(Widget):
 
         self.count = 0.
         self.center = (0, 0)
-        self.scale = config.get_scale_object()
+        self.scale_obj = config.get_scale_object()
         super(self.__class__, self).__init__(*kwargs)
-
-    def resize_window(self, w, h):
-        w, h = self.scale.get(w, h)
-        self.parent.resize(w, h)
-        self.size = (w, h)
 
     def update_shader(self, dt):
         s = self.canvas

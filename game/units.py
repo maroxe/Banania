@@ -75,6 +75,7 @@ class Unit(object):
     def set_animation(self, anim, duration=None):
         self.gfx.set_animation(anim, duration)
 
+
 class Hero(Unit):
     v = 5000
     physics_factory = UnitPhysics
