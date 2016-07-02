@@ -15,5 +15,9 @@ def get_sprite_size():
     return (10., 10.)
 
 
+def get_scatter_size():
+    return v(1400, 1600)
+
+
 def get_scale_object():
-    return ScaledField(get_dp(), *get_window_size())
+    return ScaledField(get_dp(), *get_scatter_size())

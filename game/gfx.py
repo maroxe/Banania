@@ -16,7 +16,7 @@ class Window(Scatter):
         kwargs.setdefault('do_scale', False)
         kwargs.setdefault('do_translation', False)
         kwargs.setdefault('do_rotation', False)
-        kwargs.setdefault('size', (600, 600))
+        kwargs.setdefault('size', config.get_scatter_size())
 
         super(Window, self).__init__(*args, **kwargs)
         Clock.schedule_once(self.fit_to_window, -1)
